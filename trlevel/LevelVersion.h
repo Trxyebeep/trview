@@ -28,6 +28,7 @@ namespace trlevel
         Platform platform{ Platform::Unknown };
         LevelVersion version{ LevelVersion::Unknown };
         bool remastered{ false };
+        uint32_t raw_version{ 0 };
     };
 
     inline bool operator==(const PlatformAndVersion & l, const PlatformAndVersion & r)
