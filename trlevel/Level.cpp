@@ -128,7 +128,7 @@ namespace trlevel
         template < typename DataType >
         std::vector<DataType> read_vector_compressed(std::basic_ispanstream<uint8_t>& file, uint32_t elements)
         {
-            auto uncompressed_data = read_compressed(file);
+            const auto uncompressed_data = read_compressed(file);
             std::basic_ispanstream<uint8_t> data_stream{ { uncompressed_data } };
             data_stream.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
             return read_vector<DataType>(data_stream, elements);
@@ -1785,7 +1785,7 @@ namespace trlevel
                 throw LevelLoadException();
             }
 
-            auto& bytes_value = *bytes;
+            const auto& bytes_value = *bytes;
             std::basic_ispanstream<uint8_t> file{ { bytes_value } };
             file.exceptions(std::ios::failbit);
             log_file(activity, file, std::format("Opened file \"{}\"", _filename));
@@ -2165,10 +2165,8 @@ namespace trlevel
     {
         auto sound_offsets = read_vector<uint32_t, uint32_t>(file);
         auto sound_data = read_vector<uint32_t, byte>(file);
-        auto ects = (int32_t)_platform_and_version.raw_version == -53;
 
-        int n = ects ? 10 : 13;
-        for (int i = 0; i < n; ++i)
+        for (int i = 0; i < 13; ++i)
         {
             int size = read<int>(file);
             if (size != 0)
@@ -2176,11 +2174,6 @@ namespace trlevel
                 skip(file, size);
                 int size2 = read<int>(file);
                 skip(file, size2);
-            }
-            else
-            {
-                if (ects)
-                    skip(file, 4);
             }
         }
 
@@ -2237,7 +2230,7 @@ namespace trlevel
         _num_textiles = read_textiles_tr4_5(activity, file, callbacks);
         log_file(activity, file, "Reading and decompressing level data");
         callbacks.on_progress("Decompressing level data");
-        std::vector<uint8_t> level_data = read_compressed(file);
+        const std::vector<uint8_t> level_data = read_compressed(file);
         std::basic_ispanstream<uint8_t> data_stream{ { level_data } };
         callbacks.on_progress("Processing level data");
 
@@ -2582,7 +2575,7 @@ namespace trlevel
 
     void Level::load_sound_fx(trview::Activity& activity, const LoadCallbacks& callbacks)
     {
-        if (auto main = load_main_sfx())
+        if (const auto main = load_main_sfx())
         {
             std::basic_ispanstream<uint8_t> sfx_file{ { *main } };
             sfx_file.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);
@@ -2638,7 +2631,7 @@ namespace trlevel
     void Level::load_ngle_sound_fx(trview::Activity& activity, std::basic_ispanstream<uint8_t>& file, const LoadCallbacks& callbacks)
     {
         const auto ngle_samples = read_sound_samples_ngle(activity, file, callbacks);
-        if (auto main = load_main_sfx())
+        if (const auto main = load_main_sfx())
         {
             std::basic_ispanstream<uint8_t> sfx_file{ { *main } };
             sfx_file.exceptions(std::ios::failbit | std::ios::badbit | std::ios::eofbit);

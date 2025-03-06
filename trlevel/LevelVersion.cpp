@@ -11,28 +11,27 @@ namespace trlevel
     {
         if (version == 0x34585254)
         {
-            return { .platform = Platform::PC, .version = LevelVersion::Tomb4, .remastered = true, .raw_version = version };
+            return { .platform = Platform::PC, .version = LevelVersion::Tomb4, .remastered = true };
         }
         else if (version == 0x35585254)
         {
-            return { .platform = Platform::PC, .version = LevelVersion::Tomb5, .remastered = true, .raw_version = version };
+            return { .platform = Platform::PC, .version = LevelVersion::Tomb5, .remastered = true };
         }
 
         switch (version & 0xff)
         {
         case 0x20:
-            return { .platform = (version & 0xff00) ? Platform::PSX : Platform::PC, .version = LevelVersion::Tomb1, .raw_version = version };
+            return { .platform = (version & 0xff00) ? Platform::PSX : Platform::PC, .version = LevelVersion::Tomb1 };
         case 0x2D:
-            return { .platform = Platform::PC, .version = LevelVersion::Tomb2, .raw_version = version };
+            return { .platform = Platform::PC, .version = LevelVersion::Tomb2 };
         case 0x34:
         case 0x38:
-            return { .platform = Platform::PC, .version = LevelVersion::Tomb3, .raw_version = version }; 
+            return { .platform = Platform::PC, .version = LevelVersion::Tomb3 }; 
         case 0xc8:
-        case 0xcb:
-            return { .platform = Platform::PSX, .version = LevelVersion::Tomb3, .raw_version = version };
+            return { .platform = Platform::PSX, .version = LevelVersion::Tomb3 };
         case 0x54:
-            return { .platform = Platform::PC, .version = LevelVersion::Tomb4, .raw_version = version };
+            return { .platform = Platform::PC, .version = LevelVersion::Tomb4 };
         }
-        return { .platform = Platform::Unknown, .version = LevelVersion::Unknown, .raw_version = version };
+        return { .platform = Platform::Unknown, .version = LevelVersion::Unknown };
     }
 }
